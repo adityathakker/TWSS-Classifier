@@ -43,5 +43,6 @@ def get_data():
     return data
 
 
-data = get_data()
-print(data)
+if __name__ == "__main__":
+    data = get_data()
+    print(data)
