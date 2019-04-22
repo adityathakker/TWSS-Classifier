@@ -1,3 +1,4 @@
 .idea
 glove.6B.100d.txt
 word2id.json
+weights.h5

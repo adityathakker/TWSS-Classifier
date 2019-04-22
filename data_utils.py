@@ -36,25 +36,27 @@ def load_embeddings(file_path, embedding_size):
     return word2id, embedding, vocab
 
 
+def is_twss(c):
+    if c == "TWSS":
+        return [1, 0]
+    else:
+        return [0, 1]
+
+
+def preprocess(text, word2id):
+    text = re.sub(' +', ' ', text.strip().lower())
+    text = re.sub(r'[^\w\s]', '', text)
+    text_list = text.split()
+    return [word2id.get(each_token, 1) for each_token in text_list]
+
+
 def get_data(word2id):
     print("Getting Data...")
-    def is_twss(c):
-        if c == "TWSS":
-            return [1, 0]
-        else:
-            return [0, 1]
-
-    def preprocess(text):
-        text = re.sub(' +', ' ', text.strip().lower())
-        text = re.sub(r'[^\w\s]', '', text)
-        text_list = text.split()
-        return [word2id.get(each_token, 1) for each_token in text_list]
-
     max_len = 0
     df = pd.read_csv("TWSS_dataset.csv")
     X_list = []
     for item in tqdm(df.iloc[:, 0]):
-        tokens = preprocess(str(item))
+        tokens = preprocess(str(item), word2id)
         max_len = max(len(tokens), max_len)
         X_list.append(tokens)
     X = np.array(X_list)
